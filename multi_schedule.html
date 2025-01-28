@@ -1,0 +1,196 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Winter 2025 Class Schedules</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background: linear-gradient(120deg, #f6d365, #fda085);
+        color: #333;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+      .login-box, .container, .schedule-choice {
+        max-width: 800px;
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        text-align: center;
+      }
+      h1, h2 {
+        margin: 0;
+        padding: 20px;
+        background: #ff9a9e;
+        color: white;
+        border-radius: 10px 10px 0 0;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      th, td {
+        padding: 15px;
+        text-align: center;
+        border-bottom: 1px solid #ddd;
+      }
+      th {
+        background: #ff758c;
+        color: white;
+        font-weight: bold;
+      }
+      tr:hover {
+        background: #f9f9f9;
+      }
+      td {
+        font-size: 1rem;
+      }
+      .time {
+        font-weight: bold;
+        color: #555;
+      }
+      .login-box input[type="password"] {
+        width: calc(100% - 20px);
+        padding: 10px;
+        margin: 15px 0;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 1rem;
+      }
+      .login-box button, .schedule-choice button {
+        background: #ff758c;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 1rem;
+        margin: 5px;
+      }
+      .login-box button:hover, .schedule-choice button:hover {
+        background: #e64573;
+      }
+    </style>
+    <script>
+      
+      const HASHED_PASSWORD = "dd745bd4519c28cc2132ecda8b8cc4b05abb98efa19aa808fad0304804c9a28c";
+
+      async function hashPassword(password) {
+        const encoder = new TextEncoder();
+        const data = encoder.encode(password);
+        const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+      }
+
+      async function checkPassword() {
+        const inputPassword = document.getElementById('password').value;
+        const hashedInput = await hashPassword(inputPassword);
+        if (hashedInput === HASHED_PASSWORD) {
+          document.getElementById('login-box').style.display = 'none';
+          document.getElementById('schedule-choice').style.display = 'block';
+        } else {
+          alert('Incorrect password. Please try again!');
+        }
+      }
+
+      function showSchedule(name) {
+        document.getElementById('schedule-choice').style.display = 'none';
+        document.getElementById(name + '-schedule').style.display = 'block';
+      }
+    </script>
+  </head>
+  <body>
+    
+    <div id="login-box" class="login-box">
+      <h2>Password Required</h2>
+      <p>Please enter the password to view the class schedules.</p>
+      <input type="password" id="password" placeholder="Enter password" />
+      <button onclick="checkPassword()">Submit</button>
+    </div>
+
+    <!-- choose -->
+    <div id="schedule-choice" class="schedule-choice" style="display: none;">
+      <h2>Select Schedule</h2>
+      <button onclick="showSchedule('gary')">Gary's Schedule</button>
+      <button onclick="showSchedule('johno')">Johno's Schedule</button>
+    </div>
+
+    <!-- Gary's -->
+    <div id="gary-schedule" class="container" style="display: none;">
+      <h1>Gary's Class Schedule</h1>
+      <table>
+        <thead>
+          <tr>
+            <th>Day</th>
+            <th>Time</th>
+            <th>Course</th>
+            <th>Room</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Tuesday</td>
+            <td class="time">8:00AM - 9:45AM</td>
+            <td>WEB 222</td>
+            <td>A3527</td>
+          </tr>
+          <tr>
+            <td>Tuesday</td>
+            <td class="time">9:50AM - 11:35AM</td>
+            <td>DBS 211</td>
+            <td>A4504</td>
+          </tr>
+          <tr>
+            <td>Tuesday</td>
+            <td class="time">1:30PM - 3:15PM</td>
+            <td>OOP244</td>
+            <td>A2518</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Johno's  -->
+    <div id="johno-schedule" class="container" style="display: none;">
+      <h1>Johno's Class Schedule</h1>
+      <table>
+        <thead>
+          <tr>
+            <th>Day</th>
+            <th>Time</th>
+            <th>Course</th>
+            <th>Room</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Monday</td>
+            <td class="time">9:00AM - 10:45AM</td>
+            <td>MATH 101</td>
+            <td>B1234</td>
+          </tr>
+          <tr>
+            <td>Wednesday</td>
+            <td class="time">11:00AM - 12:45PM</td>
+            <td>ENG 202</td>
+            <td>B5678</td>
+          </tr>
+          <tr>
+            <td>Friday</td>
+            <td class="time">2:00PM - 3:45PM</td>
+            <td>SCI 303</td>
+            <td>C9101</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </body>
+</html>
